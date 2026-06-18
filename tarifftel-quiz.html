@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HS Code Challenge — TariffTel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <!-- HubSpot Forms embed — update portalId and formId before going live -->
+  <script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #0b0f1e;
+      --navy-mid:    #141929;
+      --navy-card:   #1a2035;
+      --blue:        #2563eb;
+      --blue-dark:   #1d4ed8;
+      --blue-glow:   rgba(37,99,235,0.18);
+      --white:       #ffffff;
+      --off-white:   #f0f4ff;
+      --text-dim:    #94a3b8;
+      --border:      rgba(255,255,255,0.08);
+      --green:       #16a34a;
+      --green-bg:    rgba(22,163,74,0.12);
+      --red:         #dc2626;
+      --red-bg:      rgba(220,38,38,0.10);
+      --gold:        #f59e0b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Header ──────────────────────────── */
+    header {
+      width: 100%;
+      background: rgba(11,15,30,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      flex-shrink: 0;
+    }
+
+    .logo-link { display: flex; align-items: center; }
+    .logo-img { height: 26px; width: auto; }
+    .logo-fallback { display: none; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; color: var(--white); }
+
+    .header-right { display: flex; align-items: center; gap: 1rem; }
+    .header-cat-label { font-size: 0.72rem; font-weight: 600; color: var(--text-dim); }
+    .header-cat-badge {
+      display: none;
+      font-size: 0.7rem; font-weight: 700;
+      padding: 3px 10px; border-radius: 20px;
+      background: var(--blue-glow); border: 1px solid rgba(37,99,235,0.35);
+      color: #93c5fd; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+    .header-cat-badge.show { display: inline-block; }
+
+    /* ── Screens ─────────────────────────── */
+    .screen { display: none; flex: 1; flex-direction: column; }
+    .screen.active { display: flex; }
+
+    /* ══════════════════════════════════════
+       SPLASH
+    ══════════════════════════════════════ */
+    #s-splash {
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem 4rem;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .blob { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; animation: bdrift 12s ease-in-out infinite alternate; }
+    .blob-1 { width: 480px; height: 480px; background: var(--blue);  opacity: 0.2; top: -160px;  left: -160px; animation-duration: 11s; }
+    .blob-2 { width: 360px; height: 360px; background: #7c3aed;      opacity: 0.15; bottom:-100px; right:-100px; animation-duration: 14s; animation-delay:-5s; }
+    @keyframes bdrift { from { transform: translate(0,0) scale(1); } to { transform: translate(20px,16px) scale(1.05); } }
+
+    .splash-inner { position: relative; z-index: 1; max-width: 560px; width: 100%; }
+
+    /* ── Real iPad image ── */
+    .ipad-wrap { display: inline-block; margin-bottom: 2rem; }
+
+    .ipad-real-img {
+      width: 420px;
+      max-width: 88vw;
+      border-radius: 16px;
+      display: block;
+      animation: ipad-float 5s ease-in-out infinite;
+      filter: drop-shadow(0 24px 60px rgba(0,0,0,0.5));
+    }
+    @keyframes ipad-float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    .splash-headline {
+      font-size: clamp(2.2rem, 6vw, 3.4rem);
+      font-weight: 900; letter-spacing: -0.04em; line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .splash-headline .blue { color: var(--blue); }
+
+    .splash-sub {
+      font-size: 1rem; color: var(--text-dim); line-height: 1.72;
+      max-width: 440px; margin: 0 auto 0.85rem;
+    }
+
+    .splash-prize {
+      font-size: 1.05rem; font-weight: 600; color: var(--off-white);
+      margin-bottom: 2.25rem; line-height: 1.6;
+    }
+    .splash-prize em { font-style: normal; color: #fbbf24; }
+
+    .start-btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 1rem 2.5rem;
+      background: var(--blue); color: #fff;
+      font-family: inherit; font-size: 1rem; font-weight: 700;
+      border: none; border-radius: 12px; cursor: pointer;
+      letter-spacing: -0.01em;
+      box-shadow: 0 4px 28px rgba(37,99,235,0.45);
+      transition: background 0.15s, transform 0.15s, box-shadow 0.15s;
+    }
+    .start-btn:hover { background: var(--blue-dark); transform: translateY(-2px); box-shadow: 0 8px 36px rgba(37,99,235,0.55); }
+    .start-btn .arrow { transition: transform 0.15s; }
+    .start-btn:hover .arrow { transform: translateX(4px); }
+    .disclaimer { margin-top: 1.1rem; font-size: 0.72rem; color: #475569; }
+
+    /* ══════════════════════════════════════
+       CATEGORY SELECTION
+    ══════════════════════════════════════ */
+    #s-category {
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem 4rem;
+      text-align: center;
+    }
+
+    .cat-inner { max-width: 680px; width: 100%; }
+
+    .cat-headline {
+      font-size: 1.9rem; font-weight: 800; letter-spacing: -0.03em;
+      margin-bottom: 0.6rem;
+    }
+    .cat-sub { font-size: 0.95rem; color: var(--text-dim); margin-bottom: 2.5rem; line-height: 1.6; }
+
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    @media (max-width: 560px) { .cat-grid { grid-template-columns: 1fr; } }
+
+    .cat-btn {
+      display: flex; flex-direction: column; align-items: center;
+      padding: 2rem 1.25rem;
+      background: var(--navy-card);
+      border: 1px solid var(--border);
+      border-radius: 16px; cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
+      color: var(--white); font-family: inherit; text-align: center;
+    }
+    .cat-btn:hover {
+      border-color: rgba(37,99,235,0.5);
+      background: rgba(37,99,235,0.07);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25);
+    }
+    .cat-icon { font-size: 2.75rem; margin-bottom: 0.85rem; }
+    .cat-title { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; margin-bottom: 0.3rem; }
+    .cat-desc  { font-size: 0.78rem; color: var(--text-dim); line-height: 1.45; }
+
+    /* ══════════════════════════════════════
+       QUIZ
+    ══════════════════════════════════════ */
+    #s-quiz { align-items: stretch; }
+
+    .quiz-main {
+      width: 100%; max-width: 720px; margin: 0 auto;
+      padding: 2.25rem 1.5rem 5rem;
+    }
+
+    /* Progress */
+    .progress-wrap { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.75rem; }
+    .progress-bar { flex: 1; height: 4px; background: var(--border); border-radius: 4px; overflow: hidden; }
+    .progress-fill { height: 100%; background: var(--blue); border-radius: 4px; transition: width 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .progress-label { font-size: 0.76rem; font-weight: 600; color: var(--text-dim); white-space: nowrap; }
+
+    /* Question card */
+    .q-card { background: var(--navy-card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; display: none; }
+    .q-card.active { display: block; }
+
+    /* Photo header */
+    .q-photo {
+      position: relative; width: 100%; height: 200px;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .q-photo img {
+      position: absolute; inset: 0; width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    .q-photo-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(26,32,53,0.85) 100%);
+      z-index: 1;
+    }
+    /* fallback gradient bg (hidden when img loads) */
+    .q-photo-bg { position: absolute; inset: 0; }
+    .q-photo-illus { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .q-photo-icon { font-size: 3.8rem; filter: drop-shadow(0 4px 16px rgba(0,0,0,0.4)); animation: float 3.5s ease-in-out infinite; }
+    @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .q-photo-sub { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
+    .q-photo-tag {
+      position: absolute; top: 13px; left: 13px; z-index: 3;
+      font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #fff;
+      background: rgba(37,99,235,0.85); backdrop-filter: blur(6px);
+      padding: 4px 10px; border-radius: 6px;
+    }
+
+    /* bg variants per category */
+    .bg-food    { background: linear-gradient(135deg, #3b1505 0%, #7c2d12 50%, #92400e 100%); }
+    .bg-homeware{ background: linear-gradient(135deg, #0f2460 0%, #1e3a8a 50%, #312e81 100%); }
+    .bg-retail  { background: linear-gradient(135deg, #0f2460 0%, #1e3a8a 45%, #6d28d9 100%); }
+    .bg-tea     { background: linear-gradient(135deg, #14532d 0%, #166534 50%, #065f46 100%); }
+    .bg-shorts  { background: linear-gradient(135deg, #064e3b 0%, #065f46 45%, #0891b2 100%); }
+    .bg-period  { background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4f46e5 100%); }
+    .bg-kettle  { background: linear-gradient(135deg, #1c1917 0%, #292524 50%, #374151 100%); }
+    .bg-candle  { background: linear-gradient(135deg, #78350f 0%, #92400e 50%, #b45309 100%); }
+    .bg-mug     { background: linear-gradient(135deg, #1e3a5f 0%, #0e4972 50%, #0369a1 100%); }
+
+    /* Card body */
+    .q-body { padding: 1.5rem 1.75rem 1.75rem; }
+    .q-number { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--blue); margin-bottom: 0.55rem; }
+    .q-prompt { font-size: 1.1rem; font-weight: 700; letter-spacing: -0.02em; line-height: 1.4; margin-bottom: 0.65rem; }
+    .q-detail {
+      font-size: 0.85rem; color: var(--text-dim); line-height: 1.7;
+      margin-bottom: 1.4rem;
+      padding: 0.85rem 1rem;
+      background: rgba(255,255,255,0.03);
+      border-left: 3px solid var(--blue);
+      border-radius: 0 8px 8px 0;
+    }
+    .q-detail strong { color: var(--off-white); font-weight: 600; }
+
+    /* Options */
+    .options { display: flex; flex-direction: column; gap: 0.55rem; }
+    .option {
+      display: flex; align-items: flex-start; gap: 0.85rem;
+      padding: 0.85rem 0.95rem;
+      border: 1px solid var(--border); border-radius: 10px;
+      cursor: pointer; transition: border-color 0.13s, background 0.13s, transform 0.09s;
+      background: transparent; text-align: left; width: 100%;
+      color: var(--white); font-family: inherit;
+    }
+    .option:hover:not(.disabled) { border-color: rgba(37,99,235,0.5); background: var(--blue-glow); transform: translateX(2px); }
+    .option.disabled { cursor: default; }
+    .option.correct  { border-color: var(--green); background: var(--green-bg); }
+    .option.incorrect{ border-color: var(--red);   background: var(--red-bg);   }
+    .option.dimmed   { opacity: 0.33; }
+
+    .opt-letter {
+      width: 27px; height: 27px; border-radius: 6px; border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.75rem; font-weight: 700; flex-shrink: 0; margin-top: 1px;
+      color: var(--text-dim); transition: background 0.13s, border-color 0.13s, color 0.13s;
+    }
+    .option:hover:not(.disabled) .opt-letter { background: var(--blue); border-color: var(--blue); color: #fff; }
+    .option.correct   .opt-letter { background: var(--green); border-color: var(--green); color: #fff; }
+    .option.incorrect .opt-letter { background: var(--red);   border-color: var(--red);   color: #fff; }
+
+    .opt-text { flex: 1; }
+    .opt-code { font-size: 0.92rem; font-weight: 700; font-family: 'Courier New', monospace; letter-spacing: 0.02em; margin-bottom: 2px; }
+    .opt-desc { font-size: 0.77rem; color: var(--text-dim); line-height: 1.4; }
+    .option.correct .opt-desc, .option.incorrect .opt-desc { color: inherit; opacity: 0.85; }
+
+    .opt-icon { font-size: 1rem; flex-shrink: 0; margin-top: 4px; opacity: 0; transition: opacity 0.18s; }
+    .option.correct .opt-icon, .option.incorrect .opt-icon { opacity: 1; }
+
+    /* Feedback */
+    .feedback { display: none; margin-top: 1rem; padding: 1rem 1.1rem; border-radius: 10px; font-size: 0.85rem; line-height: 1.65; }
+    .feedback.show { display: block; }
+    .feedback.correct-fb   { background: var(--green-bg); border: 1px solid rgba(22,163,74,0.3); }
+    .feedback.incorrect-fb { background: rgba(220,38,38,0.07); border: 1px solid rgba(220,38,38,0.2); }
+    .fb-heading { font-weight: 700; margin-bottom: 0.3rem; font-size: 0.88rem; }
+    .feedback.correct-fb   .fb-heading { color: #4ade80; }
+    .feedback.incorrect-fb .fb-heading { color: #fca5a5; }
+    .feedback p { color: var(--text-dim); }
+    .feedback p strong { color: var(--off-white); font-weight: 600; }
+    .duty-pill {
+      display: inline-block; margin-top: 0.45rem;
+      font-size: 0.68rem; font-weight: 700; padding: 3px 10px; border-radius: 20px;
+      background: rgba(37,99,235,0.2); border: 1px solid rgba(37,99,235,0.4);
+      color: #93c5fd; letter-spacing: 0.04em; text-transform: uppercase;
+    }
+
+    .next-btn {
+      display: none; margin-top: 1rem;
+      padding: 0.7rem 1.5rem; background: var(--blue); color: #fff;
+      font-family: inherit; font-size: 0.875rem; font-weight: 600;
+      border: none; border-radius: 8px; cursor: pointer;
+      transition: background 0.13s, transform 0.09s;
+    }
+    .next-btn:hover { background: var(--blue-dark); transform: translateY(-1px); }
+    .next-btn.show { display: inline-flex; align-items: center; gap: 0.5rem; }
+
+    /* ══════════════════════════════════════
+       RESULTS
+    ══════════════════════════════════════ */
+    #s-results {
+      align-items: center; justify-content: center;
+      padding: 3rem 1.5rem 4rem; text-align: center;
+    }
+
+    .results-inner { max-width: 520px; width: 100%; }
+
+    .score-card {
+      background: var(--navy-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2.5rem 2rem; margin-bottom: 1.25rem;
+    }
+    .score-emoji { font-size: 3rem; margin-bottom: 0.75rem; }
+    .score-value { font-size: 2.6rem; font-weight: 800; letter-spacing: -0.04em; color: var(--blue); margin-bottom: 0.35rem; }
+    .score-label { font-size: 1rem; font-weight: 600; margin-bottom: 0.6rem; }
+    .score-sub   { font-size: 0.875rem; color: var(--text-dim); line-height: 1.65; }
+
+    .prize-callout {
+      display: none;
+      background: linear-gradient(135deg, rgba(245,158,11,0.12), rgba(245,158,11,0.04));
+      border: 1px solid rgba(245,158,11,0.35); border-radius: 12px;
+      padding: 1.25rem 1.5rem; margin-bottom: 1.25rem; text-align: center;
+    }
+    .prize-callout.show { display: block; }
+    .prize-callout-icon { font-size: 1.6rem; margin-bottom: 0.4rem; }
+    .prize-callout-heading { font-size: 0.95rem; font-weight: 700; color: #fbbf24; margin-bottom: 0.3rem; }
+    .prize-callout p { font-size: 0.83rem; color: var(--text-dim); line-height: 1.6; }
+
+    .claim-btn {
+      display: inline-block; margin-top: 0.85rem;
+      padding: 0.75rem 1.75rem;
+      background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff;
+      font-family: inherit; font-size: 0.9rem; font-weight: 700;
+      border: none; border-radius: 8px; cursor: pointer;
+      transition: opacity 0.13s, transform 0.09s;
+      box-shadow: 0 4px 20px rgba(245,158,11,0.35);
+    }
+    .claim-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .restart-btn {
+      padding: 0.72rem 2rem; background: transparent; color: var(--text-dim);
+      font-family: inherit; font-size: 0.875rem; font-weight: 600;
+      border: 1px solid var(--border); border-radius: 8px; cursor: pointer;
+      transition: border-color 0.13s, color 0.13s; display: block; width: 100%;
+      text-align: center;
+    }
+    .restart-btn:hover { border-color: rgba(255,255,255,0.2); color: var(--white); }
+
+    /* ══════════════════════════════════════
+       ENTRY FORM
+    ══════════════════════════════════════ */
+    #s-entry {
+      align-items: stretch;
+      padding: 0;
+    }
+
+    .entry-main {
+      width: 100%; max-width: 600px; margin: 0 auto;
+      padding: 2.5rem 1.5rem 5rem;
+    }
+
+    .entry-header { margin-bottom: 2rem; text-align: center; }
+    .entry-header h2 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 0.5rem; }
+    .entry-header p  { font-size: 0.9rem; color: var(--text-dim); line-height: 1.65; }
+
+    /* T&Cs link */
+    .tcs-link-wrap { text-align: center; margin-bottom: 1.5rem; }
+    .tcs-link {
+      font-size: 0.78rem; color: #60a5fa; cursor: pointer;
+      text-decoration: underline; background: none; border: none;
+      font-family: inherit;
+    }
+
+    /* HubSpot wrapper */
+    #hs-form-container { min-height: 60px; }
+
+    /* Fallback custom form (shown if HubSpot fails / not configured) */
+    #fallback-form { display: none; }
+
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    .form-group { display: flex; flex-direction: column; gap: 0.35rem; margin-bottom: 1rem; }
+    .form-label { font-size: 0.78rem; font-weight: 600; color: var(--off-white); }
+    .form-input, .form-select {
+      padding: 0.7rem 0.9rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--white);
+      font-family: inherit; font-size: 0.9rem;
+      transition: border-color 0.13s;
+      width: 100%;
+    }
+    .form-input:focus, .form-select:focus { outline: none; border-color: var(--blue); }
+    .form-select option { background: #1a2035; color: var(--white); }
+    .form-input::placeholder { color: #475569; }
+
+    .form-submit {
+      width: 100%; padding: 0.9rem;
+      background: linear-gradient(135deg, #f59e0b, #d97706); color: #fff;
+      font-family: inherit; font-size: 1rem; font-weight: 700;
+      border: none; border-radius: 10px; cursor: pointer;
+      transition: opacity 0.13s, transform 0.09s;
+      box-shadow: 0 4px 24px rgba(245,158,11,0.3);
+    }
+    .form-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    .form-success {
+      display: none; text-align: center;
+      padding: 2rem; border-radius: 12px;
+      background: var(--green-bg); border: 1px solid rgba(22,163,74,0.3);
+    }
+    .form-success h3 { font-size: 1.2rem; font-weight: 700; color: #4ade80; margin-bottom: 0.5rem; }
+    .form-success p  { font-size: 0.88rem; color: var(--text-dim); line-height: 1.65; }
+
+    /* ══════════════════════════════════════
+       T&Cs MODAL
+    ══════════════════════════════════════ */
+    .modal-backdrop {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7); backdrop-filter: blur(4px);
+      z-index: 500; align-items: center; justify-content: center; padding: 1rem;
+    }
+    .modal-backdrop.open { display: flex; }
+
+    .modal {
+      background: var(--navy-card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 2rem;
+      max-width: 520px; width: 100%; max-height: 80vh; overflow-y: auto;
+    }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .modal-title  { font-size: 1.1rem; font-weight: 700; }
+    .modal-close  { background: none; border: none; color: var(--text-dim); font-size: 1.4rem; cursor: pointer; padding: 0 4px; }
+    .modal-close:hover { color: var(--white); }
+
+    .tcs-body { font-size: 0.83rem; color: var(--text-dim); line-height: 1.75; }
+    .tcs-body h4 { font-size: 0.9rem; font-weight: 700; color: var(--off-white); margin: 1rem 0 0.35rem; }
+    .tcs-body p  { margin-bottom: 0.5rem; }
+    .tcs-body ul { padding-left: 1.25rem; margin-bottom: 0.5rem; }
+    .tcs-body li { margin-bottom: 0.3rem; }
+
+    /* ── Footer ──────────────────────────── */
+    footer {
+      padding: 1.25rem; text-align: center;
+      font-size: 0.74rem; color: var(--text-dim);
+      border-top: 1px solid var(--border); flex-shrink: 0;
+    }
+    footer a { color: #60a5fa; text-decoration: none; }
+    footer a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo-link" href="#" onclick="goHome(); return false;" aria-label="TariffTel home">
+      <img class="logo-img" src="https://www.tarifftel.com/wp-content/uploads/2024/05/logo-new.svg" alt="TariffTel"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='block';" />
+      <span class="logo-fallback">TariffTel</span>
+    </a>
+    <div class="header-right">
+      <span class="header-cat-label" id="header-cat-label" style="display:none"></span>
+      <span class="header-cat-badge" id="header-cat-badge"></span>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════ SPLASH ══════════════════════════════════ -->
+  <div class="screen active" id="s-splash">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+
+    <div class="splash-inner">
+
+      <h1 class="splash-headline">
+        Can you crack<br /><span class="blue">the HS Code?</span>
+      </h1>
+
+      <p class="splash-sub">
+        Think you know your tariff classifications? The details that make or break a customs declaration — and a duty bill. Get every question right and you could win.
+      </p>
+
+      <p class="splash-prize">
+        Get them all right and<br /><em>you could win a brand-new iPad.</em>
+      </p>
+
+      <button class="start-btn" id="start-btn">
+        Start the quiz <span class="arrow">→</span>
+      </button>
+
+      <p class="disclaimer">*Prize subject to terms &amp; conditions. One entry per person.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ CATEGORY ══════════════════════════════════ -->
+  <div class="screen" id="s-category">
+    <div class="cat-inner" style="margin: auto; padding: 3rem 1.5rem;">
+      <h2 class="cat-headline">Pick your category</h2>
+      <p class="cat-sub">3 questions, one category. Get them all right to enter the prize draw.</p>
+
+      <div class="cat-grid">
+        <button class="cat-btn" onclick="startCategory('food')">
+          <div class="cat-icon">🍫</div>
+          <div class="cat-title">Food &amp; Drink</div>
+          <div class="cat-desc">Tea, chocolate, confectionery — classify by ingredient and process</div>
+        </button>
+        <button class="cat-btn" onclick="startCategory('homeware')">
+          <div class="cat-icon">🏠</div>
+          <div class="cat-title">Homeware</div>
+          <div class="cat-desc">Kettles, candles, ceramics — material and function both matter</div>
+        </button>
+        <button class="cat-btn" onclick="startCategory('retail')">
+          <div class="cat-icon">👗</div>
+          <div class="cat-title">Retail</div>
+          <div class="cat-desc">Apparel and fashion — where design details change the code</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ QUIZ ══════════════════════════════════ -->
+  <div class="screen" id="s-quiz">
+    <div class="quiz-main">
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        <span class="progress-label" id="progress-label">Question 1 of 3</span>
+      </div>
+
+      <!-- ═══ FOOD Q1: Chamomile herbal tea ═══ -->
+      <div class="q-card" id="food-q1">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-tea"></div>
+          <img src="https://images.unsplash.com/photo-1631037958943-f6c220c4703a?w=800&h=400&fit=crop&q=80"
+               alt="Chamomile tea" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">Pure dried chamomile · No tea leaves</div>
+          </div>
+          <div class="q-photo-tag">Food &amp; Drink</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 1 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for these chamomile tea bags.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> Retail box of chamomile herbal infusion bags — pure dried chamomile flowers, no Camellia sinensis (tea plant) leaves, no added sugar or flavourings.<br /><br />
+            <strong>Made of:</strong> 100% dried chamomile flowers. Packaged for retail sale.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="false"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">0902.10</div><div class="opt-desc">Green tea — retail packs ≤ 3 kg, not flavoured</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">0902.30</div><div class="opt-desc">Black tea — retail packs ≤ 3 kg, not flavoured</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">2101.20</div><div class="opt-desc">Tea extracts, essences and concentrates</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="true"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">2106.90</div><div class="opt-desc">Food preparations not elsewhere specified</div></div><div class="opt-icon">✓</div></button>
+          </div>
+          <div class="feedback" id="food-q1-fb"></div>
+          <button class="next-btn" id="food-q1-next">Next question →</button>
+        </div>
+      </div>
+
+      <!-- ═══ FOOD Q2: Filled dark chocolate bar ═══ -->
+      <div class="q-card" id="food-q2">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-food"></div>
+          <img src="https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=800&h=400&fit=crop&q=80"
+               alt="Dark chocolate" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">70% Cocoa · Caramel Filled · Retail Slab</div>
+          </div>
+          <div class="q-photo-tag">Food &amp; Drink</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 2 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for this dark chocolate bar.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> A dark chocolate bar sold as a retail slab, with a soft caramel filling inside.<br /><br />
+            <strong>Made of:</strong> 70% cocoa solids, caramel centre, refined sugar. Sold as a single retail unit.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="false"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">1806.20</div><div class="opt-desc">Other chocolate preparations — bulk (over 2 kg)</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">1806.32</div><div class="opt-desc">Chocolate in blocks, slabs or bars — not filled</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="true"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">1806.31</div><div class="opt-desc">Chocolate in blocks, slabs or bars — filled</div></div><div class="opt-icon">✓</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">2106.90</div><div class="opt-desc">Miscellaneous food preparations NES</div></div><div class="opt-icon">✗</div></button>
+          </div>
+          <div class="feedback" id="food-q2-fb"></div>
+          <button class="next-btn" id="food-q2-next">Next question →</button>
+        </div>
+      </div>
+
+      <!-- ═══ FOOD Q3: Green tea retail ═══ -->
+      <div class="q-card" id="food-q3">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-tea"></div>
+          <img src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?w=800&h=400&fit=crop&q=80"
+               alt="Green tea" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">Camellia sinensis · Unsweetened · Retail Pack</div>
+          </div>
+          <div class="q-photo-tag">Food &amp; Drink</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 3 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for this green tea.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> Loose-leaf Japanese green tea (Sencha), made from real Camellia sinensis tea plant leaves. No added sugar, flavourings or additives. Sold in a retail pack of 100g.<br /><br />
+            <strong>Made of:</strong> 100% unfermented Camellia sinensis tea leaves.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="true"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">0902.10</div><div class="opt-desc">Green tea — retail packs ≤ 3 kg, not flavoured</div></div><div class="opt-icon">✓</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">2106.90</div><div class="opt-desc">Food preparations not elsewhere specified</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">2101.20</div><div class="opt-desc">Extracts, essences and concentrates of tea</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">0902.40</div><div class="opt-desc">Black tea — other (not retail packed)</div></div><div class="opt-icon">✗</div></button>
+          </div>
+          <div class="feedback" id="food-q3-fb"></div>
+          <button class="next-btn" id="food-q3-next">See results →</button>
+        </div>
+      </div>
+
+      <!-- ═══ HOMEWARE Q1: Electric kettle ═══ -->
+      <div class="q-card" id="homeware-q1">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-kettle"></div>
+          <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800&h=400&fit=crop&q=80"
+               alt="Electric kettle" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">1.7L · 1500W · Plastic &amp; Stainless Steel</div>
+          </div>
+          <div class="q-photo-tag">Homeware</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 1 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for this electric kettle.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> A household electric kettle, 1.7 litre capacity, 1500W element, with a plastic body and stainless steel inner.<br /><br />
+            <strong>Made of:</strong> BPA-free plastic exterior, stainless steel interior, concealed heating element.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="false"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">8419.11</div><div class="opt-desc">Instantaneous water heaters — non-electric, gas</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">7323.99</div><div class="opt-desc">Stainless steel kitchen / table articles</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="true"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">8516.40</div><div class="opt-desc">Electric instantaneous or storage water heaters</div></div><div class="opt-icon">✓</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">8516.79</div><div class="opt-desc">Other electro-thermic appliances</div></div><div class="opt-icon">✗</div></button>
+          </div>
+          <div class="feedback" id="homeware-q1-fb"></div>
+          <button class="next-btn" id="homeware-q1-next">Next question →</button>
+        </div>
+      </div>
+
+      <!-- ═══ HOMEWARE Q2: Scented soy candle ═══ -->
+      <div class="q-card" id="homeware-q2">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-candle"></div>
+          <img src="https://images.unsplash.com/photo-1602523961358-f9f03dd557db?w=800&h=400&fit=crop&q=80"
+               alt="Scented candle" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">Soy wax · Sandalwood &amp; Vanilla · Glass jar</div>
+          </div>
+          <div class="q-photo-tag">Homeware</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 2 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for this scented soy wax candle.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> A scented soy wax candle poured into a glass jar, fragranced with sandalwood and vanilla essential oils. Sold as a home fragrance / wellness product.<br /><br />
+            <strong>Made of:</strong> Soy wax, cotton wick, essential oil fragrance blend. Packaged in a glass jar with a lid.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="false"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">3301.29</div><div class="opt-desc">Essential oils — other (not of citrus fruit)</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">3307.49</div><div class="opt-desc">Room deodorisers / air fresheners</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="true"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">3406.00</div><div class="opt-desc">Candles, tapers and the like</div></div><div class="opt-icon">✓</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">3923.10</div><div class="opt-desc">Boxes and cases of plastics</div></div><div class="opt-icon">✗</div></button>
+          </div>
+          <div class="feedback" id="homeware-q2-fb"></div>
+          <button class="next-btn" id="homeware-q2-next">Next question →</button>
+        </div>
+      </div>
+
+      <!-- ═══ HOMEWARE Q3: Stoneware mug ═══ -->
+      <div class="q-card" id="homeware-q3">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-mug"></div>
+          <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=800&h=400&fit=crop&q=80"
+               alt="Ceramic mug" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">Stoneware · Not porcelain or bone china</div>
+          </div>
+          <div class="q-photo-tag">Homeware</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 3 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for this stoneware coffee mug.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> A handmade stoneware ceramic coffee mug, 350ml. Sold as tableware for domestic use.<br /><br />
+            <strong>Made of:</strong> Stoneware clay body — NOT fine bone china, NOT porcelain. Glazed finish. Made in the UK.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="false"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">6911.10</div><div class="opt-desc">Tableware — porcelain or china</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="true"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">6912.00</div><div class="opt-desc">Ceramic tableware — other than porcelain or china</div></div><div class="opt-icon">✓</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">6913.90</div><div class="opt-desc">Ceramic ornamental articles</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">7013.22</div><div class="opt-desc">Drinking glasses — lead crystal</div></div><div class="opt-icon">✗</div></button>
+          </div>
+          <div class="feedback" id="homeware-q3-fb"></div>
+          <button class="next-btn" id="homeware-q3-next">See results →</button>
+        </div>
+      </div>
+
+      <!-- ═══ RETAIL Q1: Bikini top with cups ═══ -->
+      <div class="q-card" id="retail-q1">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-retail"></div>
+          <img src="https://images.unsplash.com/photo-1570976447640-ac859083963f?w=800&h=400&fit=crop&q=80"
+               alt="Bikini top" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">87% Polyamide · 13% Elastane · Moulded cups</div>
+          </div>
+          <div class="q-photo-tag">Retail — Apparel</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 1 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for this bikini top.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> A bikini top with fully moulded, structured cups that provide breast support — shaped like a bra.<br /><br />
+            <strong>Made of:</strong> 87% polyamide, 13% elastane knitted fabric. Sold as swimwear.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="false"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">6114300000</div><div class="opt-desc">Other knitted garments — polyamide / elastane</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">6112419000</div><div class="opt-desc">Swimwear — women's, knitted synthetic fibres</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="true"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">6212109000</div><div class="opt-desc">Brassieres — other materials</div></div><div class="opt-icon">✓</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">6211110000</div><div class="opt-desc">Women's swimwear — woven / not knitted</div></div><div class="opt-icon">✗</div></button>
+          </div>
+          <div class="feedback" id="retail-q1-fb"></div>
+          <button class="next-btn" id="retail-q1-next">Next question →</button>
+        </div>
+      </div>
+
+      <!-- ═══ RETAIL Q2: Swim shorts zip ═══ -->
+      <div class="q-card" id="retail-q2">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-shorts"></div>
+          <img src="https://images.unsplash.com/photo-1565084888279-aca607bb6444?w=800&h=400&fit=crop&q=80"
+               alt="Swim shorts" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">100% Polyester · Zip-fastening pocket</div>
+          </div>
+          <div class="q-photo-tag">Retail — Apparel</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 2 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for these men's swim shorts.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> Men's swimming shorts with a <strong>zip-fastening</strong> side pocket and mesh inner lining.<br /><br />
+            <strong>Made of:</strong> 100% woven polyester outer, mesh polyester lining. Intended and marketed for swimming.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="false"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">6203439000</div><div class="opt-desc">Men's shorts — synthetic fibres (trousers chapter)</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="true"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">6211110000</div><div class="opt-desc">Men's swimwear — woven synthetic fibres</div></div><div class="opt-icon">✓</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">6112419000</div><div class="opt-desc">Swimwear — knitted synthetic fibres</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">6203499000</div><div class="opt-desc">Men's shorts — other textile materials</div></div><div class="opt-icon">✗</div></button>
+          </div>
+          <div class="feedback" id="retail-q2-fb"></div>
+          <button class="next-btn" id="retail-q2-next">Next question →</button>
+        </div>
+      </div>
+
+      <!-- ═══ RETAIL Q3: Period swimsuit ═══ -->
+      <div class="q-card" id="retail-q3">
+        <div class="q-photo">
+          <div class="q-photo-bg bg-period"></div>
+          <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&h=400&fit=crop&q=80"
+               alt="Period swimsuit" onload="this.previousElementSibling.style.opacity='0'"
+               onerror="this.style.display='none'" />
+          <div class="q-photo-overlay"></div>
+          <div class="q-photo-illus">
+            <div class="q-photo-sub">Three-layer absorbent gusset · Up to 12ml</div>
+          </div>
+          <div class="q-photo-tag">Retail — Apparel</div>
+        </div>
+        <div class="q-body">
+          <div class="q-number">Question 3 of 3</div>
+          <div class="q-prompt">Guess the correct HS Code for this period swimsuit.</div>
+          <div class="q-detail">
+            <strong>Product:</strong> A women's one-piece swimsuit with a built-in three-layer gusset — moisture-wicking, absorbent, and anti-leak layers designed to absorb up to 12ml of menstrual fluid.<br /><br />
+            <strong>Made of:</strong> 80% polyamide, 20% elastane outer. Absorbent inner layers.
+          </div>
+          <div class="options">
+            <button class="option" data-correct="false"><div class="opt-letter">A</div><div class="opt-text"><div class="opt-code">6112419000</div><div class="opt-desc">Swimwear — women's, knitted synthetic fibres</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">B</div><div class="opt-text"><div class="opt-code">6211420000</div><div class="opt-desc">Women's garments — other knitted</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="false"><div class="opt-letter">C</div><div class="opt-text"><div class="opt-code">6114300000</div><div class="opt-desc">Other knitted garments — polyamide / elastane</div></div><div class="opt-icon">✗</div></button>
+            <button class="option" data-correct="true"><div class="opt-letter">D</div><div class="opt-text"><div class="opt-code">9619005010</div><div class="opt-desc">Sanitary articles — other (absorbent function)</div></div><div class="opt-icon">✓</div></button>
+          </div>
+          <div class="feedback" id="retail-q3-fb"></div>
+          <button class="next-btn" id="retail-q3-next">See results →</button>
+        </div>
+      </div>
+
+    </div><!-- /quiz-main -->
+  </div>
+
+  <!-- ══════════════════════════════════ RESULTS ══════════════════════════════════ -->
+  <div class="screen" id="s-results">
+    <div style="margin:auto; max-width:520px; width:100%; padding:3rem 1.5rem 4rem;">
+
+      <div class="score-card">
+        <div class="score-emoji" id="r-emoji">🎉</div>
+        <div class="score-value" id="r-value">3 / 3</div>
+        <div class="score-label" id="r-label">Perfect score!</div>
+        <p class="score-sub" id="r-sub"></p>
+      </div>
+
+      <div class="prize-callout" id="prize-callout">
+        <div class="prize-callout-icon">🏆</div>
+        <div class="prize-callout-heading">You nailed it — you're in the draw!</div>
+        <p>You got all 3 codes right. Enter your details for a chance to win a brand-new iPad in our prize draw at Multi Modal.</p>
+        <button class="claim-btn" onclick="showEntry()">Enter for the prize →</button>
+      </div>
+
+      <button class="restart-btn" onclick="restart()">↩ Start again</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ ENTRY FORM ══════════════════════════════════ -->
+  <div class="screen" id="s-entry">
+    <div class="entry-main">
+
+      <div class="entry-header">
+        <div style="font-size:2rem; margin-bottom:0.75rem;">🎁</div>
+        <h2>You're in the running!</h2>
+        <p>Fill in your details below to enter the prize draw. We'll notify the winner by email within 28 days of Multi Modal.</p>
+      </div>
+
+      <div class="tcs-link-wrap">
+        <button class="tcs-link" onclick="openTCs()">📋 View full terms &amp; conditions</button>
+      </div>
+
+      <!-- HubSpot form target — update portalId and formId -->
+      <div id="hs-form-container"></div>
+
+      <!-- Fallback form (shown if HubSpot not configured) -->
+      <div id="fallback-form">
+        <div id="entry-form-wrap">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="f-first">First name *</label>
+              <input class="form-input" type="text" id="f-first" placeholder="Jane" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="f-last">Last name *</label>
+              <input class="form-input" type="text" id="f-last" placeholder="Smith" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-company">Company *</label>
+            <input class="form-input" type="text" id="f-company" placeholder="Acme Imports Ltd" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-email">Work email *</label>
+            <input class="form-input" type="email" id="f-email" placeholder="jane@acmeimports.com" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="f-industry">Industry *</label>
+            <select class="form-select" id="f-industry" required>
+              <option value="" disabled selected>Select your industry</option>
+              <option>Food &amp; Drink</option>
+              <option>Fashion &amp; Apparel</option>
+              <option>Homeware &amp; Furniture</option>
+              <option>Electronics</option>
+              <option>Retail (General)</option>
+              <option>Manufacturing</option>
+              <option>Logistics &amp; Freight</option>
+              <option>Customs Brokerage</option>
+              <option>E-commerce</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <button class="form-submit" onclick="submitForm()">Submit my entry 🏆</button>
+        </div>
+
+        <div class="form-success" id="form-success">
+          <h3>You're entered! 🎉</h3>
+          <p>Thanks for entering the TariffTel iPad prize draw. We'll draw a winner 28 days after the last day of Multi Modal and notify you by email. Good luck!</p>
+          <br />
+          <button class="restart-btn" onclick="restart()" style="margin-top:0.5rem">Play again</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ T&Cs MODAL ══════════════════════════════════ -->
+  <div class="modal-backdrop" id="tcs-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <span class="modal-title">Prize Draw — Terms &amp; Conditions</span>
+        <button class="modal-close" onclick="closeTCs()">✕</button>
+      </div>
+      <div class="tcs-body">
+        <h4>1. The Promoter</h4>
+        <p>This prize draw is run by TariffTel Ltd ("TariffTel"). By entering you agree to these terms and conditions.</p>
+
+        <h4>2. Eligibility</h4>
+        <ul>
+          <li>Open to UK and international business professionals aged 18 and over.</li>
+          <li>Employees of TariffTel and their immediate family members are excluded.</li>
+          <li>One entry per person. Duplicate entries will be disqualified.</li>
+        </ul>
+
+        <h4>3. How to Enter</h4>
+        <p>Complete all three HS Code quiz questions correctly and submit your details via the entry form. Partial entries will not be accepted.</p>
+
+        <h4>4. The Prize</h4>
+        <ul>
+          <li>One (1) Apple iPad (model and specification at TariffTel's discretion).</li>
+          <li>The prize is non-transferable, non-refundable and has no cash alternative.</li>
+        </ul>
+
+        <h4>5. Prize Draw</h4>
+        <ul>
+          <li>Winners will be selected at random from all valid entries received.</li>
+          <li>The draw will take place 28 days after the last day of Multi Modal show.</li>
+          <li>The winner will be notified by email using the address provided at entry.</li>
+          <li>If the winner does not respond within 14 days, an alternative winner will be selected.</li>
+        </ul>
+
+        <h4>6. Data</h4>
+        <p>Your personal data will be used only to administer this prize draw and, with your consent, to send you relevant information from TariffTel. We will not sell your data to third parties. See our Privacy Policy at tarifftel.com for full details.</p>
+
+        <h4>7. General</h4>
+        <ul>
+          <li>TariffTel reserves the right to cancel or amend this promotion at any time with reasonable notice.</li>
+          <li>TariffTel's decision is final in all matters relating to this draw.</li>
+          <li>This promotion is governed by the laws of England and Wales.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Questions sourced from <a href="https://www.tarifftel.com/blog/" target="_blank">tarifftel.com/blog</a>
+    &nbsp;·&nbsp;
+    <a href="https://tarifftelv2.vercel.app/" target="_blank">Explore TariffTel</a>
+    &nbsp;·&nbsp;
+    <button class="tcs-link" onclick="openTCs()" style="font-size:0.74rem">Terms &amp; Conditions</button>
+  </footer>
+
+  <script>
+  /* ─────────────────────────────────────────────────────
+     DATA
+  ───────────────────────────────────────────────────── */
+  const CATEGORIES = {
+    food:     { label: 'Food & Drink', questions: ['food-q1','food-q2','food-q3'] },
+    homeware: { label: 'Homeware',     questions: ['homeware-q1','homeware-q2','homeware-q3'] },
+    retail:   { label: 'Retail',       questions: ['retail-q1','retail-q2','retail-q3'] }
+  };
+
+  const FEEDBACK = {
+    'food-q1': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`Chamomile has no actual tea plant (Camellia sinensis) leaves — so it can't use the Chapter 09 tea codes (0902.xx). It's a <strong>food preparation: 2106.90</strong>. Only products made from real tea plant material qualify as "tea".`, pill:'Chapter 21 · Food preparations NES' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>2106.90</strong>. Chamomile contains no Camellia sinensis leaves, so Chapter 09 tea codes don't apply. It's classified as a food preparation. Only real-leaf teas — black, green, oolong — belong in 0902.`, pill:'Correct: 2106.90 · Chapter 21' }
+    },
+    'food-q2': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`The caramel centre makes all the difference. <strong>1806.31</strong> covers chocolate in blocks, slabs or bars that are <strong>filled</strong>. The almost identical code 1806.32 applies to the same format but unfilled. Same chocolate, same weight — one has a caramel centre: different code.`, pill:'Chapter 18 · Cocoa and cocoa preparations' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>1806.31</strong> — chocolate in blocks, slabs or bars, <strong>filled</strong>. 1806.32 is for unfilled bars. One word — "filled" — separates the two codes. Always check for inner components when classifying food.`, pill:'Correct: 1806.31 · Chapter 18' }
+    },
+    'food-q3': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`Real Camellia sinensis (tea plant) leaf — unsweetened, in a retail pack under 3kg — is <strong>0902.10 for green tea</strong>. The key distinction from chamomile (2106.90) is that actual tea plant leaf is present. If sugar or additives were added, the code changes.`, pill:'Chapter 09 · Coffee, tea, maté and spices' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>0902.10</strong>. Real green tea made from Camellia sinensis leaves, unsweetened and in retail packs ≤ 3kg, sits firmly in Chapter 09. It's only herbal infusions without tea plant leaves (like chamomile) that fall into 2106.90.`, pill:'Correct: 0902.10 · Chapter 09' }
+    },
+    'homeware-q1': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`An electric kettle is classified as an <strong>electric instantaneous or storage water heater: 8516.40</strong>. The plastic body is irrelevant — it's the electric heating function that drives the code. 8516.79 covers other electro-thermic appliances (like toasters), but water heaters have their own specific heading.`, pill:'Chapter 85 · Electrical machinery' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>8516.40</strong> — electric instantaneous or storage water heaters. That's the specific heading for electric kettles. The plastic or steel construction is secondary to the electric heating function. 8516.79 covers other electro-thermic appliances like toasters.`, pill:'Correct: 8516.40 · Chapter 85' }
+    },
+    'homeware-q2': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`Despite being sold as "aromatherapy" and containing essential oils, the primary article here is a <strong>candle</strong>. Classification follows the candle, not its scent. <strong>3406.00 — Candles, tapers and the like</strong> — covers scented candles regardless of the fragrance or wax type used.`, pill:'Chapter 34 · Soap, waxes, candles' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>3406.00 — Candles, tapers and the like</strong>. Even though the candle is scented and sold as a home fragrance product, classification follows the primary article (the candle), not the fragrance component. The essential oil content doesn't reclassify it into 3301.`, pill:'Correct: 3406.00 · Chapter 34' }
+    },
+    'homeware-q3': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`The distinction between <strong>6911</strong> and <strong>6912</strong> is the ceramic body type. <strong>6911</strong> is specifically porcelain or china. <strong>6912.00</strong> is "ceramic tableware other than of porcelain or china" — which includes stoneware, earthenware, and terracotta. Material matters.`, pill:'Chapter 69 · Ceramic products' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>6912.00</strong> — ceramic tableware other than porcelain or china. 6911 only applies to fine porcelain or bone china. Stoneware (heavier, coarser clay body) goes into 6912. Same product, different clay = different chapter heading.`, pill:'Correct: 6912.00 · Chapter 69' }
+    },
+    'retail-q1': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`Even though it looks like swimwear, <strong>defined moulded cups</strong> that provide breast support reclassify this as a <strong>brassiere: 6212109000</strong>. The cups trigger Chapter 62 classification instead of Chapter 61 swimwear. This also drops the UK import duty from 12% to 6%.`, pill:'UK Import Duty: 6%' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>6212109000 — brassiere</strong>. The moulded cups providing breast support push this out of swimwear into the bra category. The same top without structured cups would be 6114300000. Identical fabric, different shape, different code.`, pill:'Correct: 6212109000 · UK Duty: 6%' }
+    },
+    'retail-q2': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`The <strong>zip-fastening pocket</strong> is what makes these swimwear. Identical shorts with plain, open (non-fastening) pockets would be men's trousers/shorts under <strong>6203439000</strong>. One pocket closure changes the classification — and could change the duty rate.`, pill:'UK Import Duty: 12%' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>6211110000 — men's swimwear</strong>. The zip pocket is the deciding detail. Non-fastening pockets → men's shorts (6203439000). A zip or Velcro fastener → swimwear (6211110000). The tariff book is very specific about pocket construction.`, pill:'Correct: 6211110000 · UK Duty: 12%' }
+    },
+    'retail-q3': {
+      correct: { type:'correct-fb', h:'Correct! 🎯', b:`Despite looking like a swimsuit, the <strong>three-layer absorbent gusset</strong> designed to absorb menstrual fluid reclassifies this as a <strong>sanitary article: 9619005010</strong>. Function overrides form. This code carries <strong>0% UK import duty</strong> — compared to 12% for swimwear.`, pill:'UK Import Duty: 0%' },
+      wrong:   { type:'incorrect-fb', h:'Not quite.', b:`The correct code is <strong>9619005010 — sanitary articles</strong>. Even though it's a swimsuit in design, the absorbent gusset (function = managing menstrual fluid) means it's classified by what it does, not what it looks like. And it carries 0% UK duty vs 12% for swimwear.`, pill:'Correct: 9619005010 · UK Duty: 0%' }
+    }
+  };
+
+  /* ─────────────────────────────────────────────────────
+     STATE
+  ───────────────────────────────────────────────────── */
+  let currentCategory = null;
+  let currentQIndex   = 0;
+  let scores          = {};
+
+  /* ─────────────────────────────────────────────────────
+     SCREENS
+  ───────────────────────────────────────────────────── */
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function goHome() {
+    showScreen('s-splash');
+    document.getElementById('header-cat-label').style.display = 'none';
+    document.getElementById('header-cat-badge').classList.remove('show');
+    document.getElementById('header-cat-badge').textContent = '';
+  }
+
+  /* ─────────────────────────────────────────────────────
+     FLOW
+  ───────────────────────────────────────────────────── */
+  document.getElementById('start-btn').addEventListener('click', () => showScreen('s-category'));
+
+  function startCategory(cat) {
+    currentCategory = cat;
+    currentQIndex   = 0;
+    scores          = {};
+    const label = CATEGORIES[cat].label;
+    document.getElementById('header-cat-label').textContent = '';
+    document.getElementById('header-cat-label').style.display = 'block';
+    document.getElementById('header-cat-badge').textContent = label;
+    document.getElementById('header-cat-badge').classList.add('show');
+
+    // hide all cards, show first
+    document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+    showScreen('s-quiz');
+    showQuestion(0);
+  }
+
+  function showQuestion(idx) {
+    currentQIndex = idx;
+    const qs = CATEGORIES[currentCategory].questions;
+    document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+    document.getElementById(qs[idx]).classList.add('active');
+    const pct = Math.round((idx / 3) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-label').textContent = `Question ${idx + 1} of 3`;
+  }
+
+  /* ─────────────────────────────────────────────────────
+     OPTIONS — bind once on load
+  ───────────────────────────────────────────────────── */
+  document.querySelectorAll('.q-card').forEach(card => {
+    card.querySelectorAll('.option').forEach(btn => {
+      btn.addEventListener('click', () => {
+        if (btn.classList.contains('disabled')) return;
+        const qid = card.id;
+        const isCorrect = btn.dataset.correct === 'true';
+        scores[qid] = isCorrect;
+
+        card.querySelectorAll('.option').forEach(o => {
+          o.classList.add('disabled');
+          if (o === btn) o.classList.add(isCorrect ? 'correct' : 'incorrect');
+          else if (o.dataset.correct === 'true') o.classList.add('correct');
+          else o.classList.add('dimmed');
+        });
+
+        const fb   = document.getElementById(qid + '-fb');
+        const data = isCorrect ? FEEDBACK[qid].correct : FEEDBACK[qid].wrong;
+        fb.className = `feedback show ${data.type}`;
+        fb.innerHTML = `<div class="fb-heading">${data.h}</div><p>${data.b}</p><span class="duty-pill">${data.pill}</span>`;
+
+        document.getElementById(qid + '-next').classList.add('show');
+        const pct = Math.round(((currentQIndex + 1) / 3) * 100);
+        document.getElementById('progress-fill').style.width = pct + '%';
+      });
+    });
+  });
+
+  /* ─────────────────────────────────────────────────────
+     NEXT BUTTONS — bind once on load
+  ───────────────────────────────────────────────────── */
+  document.querySelectorAll('.next-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const qs  = CATEGORIES[currentCategory].questions;
+      const idx = currentQIndex;
+      if (idx < 2) {
+        showQuestion(idx + 1);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        showResults();
+      }
+    });
+  });
+
+  /* ─────────────────────────────────────────────────────
+     RESULTS
+  ───────────────────────────────────────────────────── */
+  function showResults() {
+    const qs = CATEGORIES[currentCategory].questions;
+    const correct = qs.filter(q => scores[q] === true).length;
+    const configs = [
+      { e:'📚', l:'Keep practising!',  s:`Tariff classification lives in the details — and those details are genuinely tricky. TariffTel's AI classifies thousands of these edge cases every day.` },
+      { e:'💡', l:'Good effort!',       s:`One right! You know your way around a tariff heading. The last two had some unexpected twists — TariffTel AI catches those before they hit your duty bill.` },
+      { e:'🎯', l:'So close!',          s:`Two out of three — impressive! Just one detail away from a perfect score and the prize draw entry.` },
+      { e:'🏆', l:'Perfect score!',     s:`All three correct — you clearly understand how product details drive classification. You're entered into the iPad prize draw!` }
+    ];
+    const cfg = configs[correct];
+    document.getElementById('r-emoji').textContent = cfg.e;
+    document.getElementById('r-value').textContent = `${correct} / 3`;
+    document.getElementById('r-label').textContent = cfg.l;
+    document.getElementById('r-sub').textContent   = cfg.s;
+    document.getElementById('prize-callout').classList.toggle('show', correct === 3);
+    showScreen('s-results');
+    document.getElementById('progress-fill').style.width = '100%';
+    document.getElementById('progress-label').textContent = 'Complete';
+  }
+
+  function showEntry() {
+    showScreen('s-entry');
+    initHubSpot();
+  }
+
+  /* ─────────────────────────────────────────────────────
+     HUBSPOT
+  ───────────────────────────────────────────────────── */
+  function initHubSpot() {
+    const container = document.getElementById('hs-form-container');
+    // ── Replace YOUR_PORTAL_ID and YOUR_FORM_ID before going live ──
+    const PORTAL_ID = '6408248';
+    const FORM_ID   = '727a2313-ac39-4595-a7f1-fe8f1af49390';
+
+    if (PORTAL_ID === 'YOUR_PORTAL_ID') {
+      // HubSpot not configured — show fallback
+      document.getElementById('fallback-form').style.display = 'block';
+      container.style.display = 'none';
+      return;
+    }
+
+    if (window.hbspt) {
+      try {
+        hbspt.forms.create({ region: 'na1', portalId: PORTAL_ID, formId: FORM_ID, target: '#hs-form-container' });
+      } catch(e) {
+        document.getElementById('fallback-form').style.display = 'block';
+        container.style.display = 'none';
+      }
+    } else {
+      document.getElementById('fallback-form').style.display = 'block';
+      container.style.display = 'none';
+    }
+  }
+
+  /* ─────────────────────────────────────────────────────
+     FALLBACK FORM
+  ───────────────────────────────────────────────────── */
+  function submitForm() {
+    const first   = document.getElementById('f-first').value.trim();
+    const last    = document.getElementById('f-last').value.trim();
+    const company = document.getElementById('f-company').value.trim();
+    const email   = document.getElementById('f-email').value.trim();
+    const industry= document.getElementById('f-industry').value;
+
+    if (!first || !last || !company || !email || !industry) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    document.getElementById('entry-form-wrap').style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }
+
+  /* ─────────────────────────────────────────────────────
+     T&Cs MODAL
+  ───────────────────────────────────────────────────── */
+  function openTCs()  { document.getElementById('tcs-modal').classList.add('open'); }
+  function closeTCs() { document.getElementById('tcs-modal').classList.remove('open'); }
+  document.getElementById('tcs-modal').addEventListener('click', e => { if (e.target === e.currentTarget) closeTCs(); });
+
+  /* ─────────────────────────────────────────────────────
+     RESTART
+  ───────────────────────────────────────────────────── */
+  function restart() {
+    // Reset all cards
+    document.querySelectorAll('.q-card').forEach(card => {
+      card.querySelectorAll('.option').forEach(o => { o.className = 'option'; });
+      card.querySelectorAll('.feedback').forEach(f => { f.className = 'feedback'; });
+      card.querySelectorAll('.next-btn').forEach(b => { b.classList.remove('show'); });
+      card.classList.remove('active');
+    });
+    // Reset form
+    document.getElementById('entry-form-wrap').style.display = 'block';
+    document.getElementById('form-success').style.display = 'none';
+    document.getElementById('fallback-form').style.display = 'none';
+    document.getElementById('hs-form-container').style.display = '';
+    // Reset header
+    document.getElementById('header-cat-label').style.display = 'none';
+    document.getElementById('header-cat-badge').classList.remove('show');
+    document.getElementById('header-cat-badge').textContent = '';
+    document.getElementById('progress-fill').style.width = '0%';
+    currentCategory = null; currentQIndex = 0; scores = {};
+    showScreen('s-splash');
+  }
+  </script>
+</body>
+</html>
