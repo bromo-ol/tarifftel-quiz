@@ -1,0 +1,3 @@
+{
+  "rewrites": [{ "source": "/", "destination": "/tarifftel-quiz.html" }]
+}
