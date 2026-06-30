@@ -853,7 +853,9 @@
         <button class="claim-btn" onclick="showEntry()">Enter for the prize →</button>
       </div>
 
-      <button class="claim-btn" id="keep-in-touch-btn" onclick="showKeepInTouch()" style="display:none; margin-bottom:1rem">Keep in touch →</button>
+      <div style="display:none; text-align:center; margin-bottom:1rem" id="keep-in-touch-wrap">
+        <button class="claim-btn" id="keep-in-touch-btn" onclick="showKeepInTouch()">Keep in touch →</button>
+      </div>
 
       <button class="restart-btn" onclick="restart()">↩ Start again</button>
     </div>
@@ -1162,7 +1164,7 @@
     document.getElementById('r-label').textContent = cfg.l;
     document.getElementById('r-sub').textContent   = cfg.s;
     document.getElementById('prize-callout').classList.toggle('show', correct === 3);
-    document.getElementById('keep-in-touch-btn').style.display = correct < 3 ? 'block' : 'none';
+    document.getElementById('keep-in-touch-wrap').style.display = correct < 3 ? 'block' : 'none';
     showScreen('s-results');
     document.getElementById('progress-fill').style.width = '100%';
     document.getElementById('progress-label').textContent = 'Complete';
