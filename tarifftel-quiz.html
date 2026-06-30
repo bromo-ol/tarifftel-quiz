@@ -853,6 +853,8 @@
         <button class="claim-btn" onclick="showEntry()">Enter for the prize →</button>
       </div>
 
+      <button class="claim-btn" id="keep-in-touch-btn" onclick="showKeepInTouch()" style="display:none; margin-bottom:1rem">Keep in touch →</button>
+
       <button class="restart-btn" onclick="restart()">↩ Start again</button>
     </div>
   </div>
@@ -922,6 +924,18 @@
         </div>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ KEEP IN TOUCH ══════════════════════════════════ -->
+  <div class="screen" id="s-keep-in-touch">
+    <div class="entry-main">
+      <div class="entry-header">
+        <div style="font-size:2rem; margin-bottom:0.75rem;">👋</div>
+        <h2>Stay connected</h2>
+        <p>Leave your details and we'll keep you updated on TariffTel news, features and future events.</p>
+      </div>
+      <div id="hs-kit-form-container"></div>
     </div>
   </div>
 
@@ -1148,6 +1162,7 @@
     document.getElementById('r-label').textContent = cfg.l;
     document.getElementById('r-sub').textContent   = cfg.s;
     document.getElementById('prize-callout').classList.toggle('show', correct === 3);
+    document.getElementById('keep-in-touch-btn').style.display = correct < 3 ? 'block' : 'none';
     showScreen('s-results');
     document.getElementById('progress-fill').style.width = '100%';
     document.getElementById('progress-label').textContent = 'Complete';
@@ -1156,6 +1171,16 @@
   function showEntry() {
     showScreen('s-entry');
     initHubSpot();
+  }
+
+  function showKeepInTouch() {
+    showScreen('s-keep-in-touch');
+    if (window.hbspt) {
+      const container = document.getElementById('hs-kit-form-container');
+      if (!container.hasChildNodes()) {
+        hbspt.forms.create({ region: 'na1', portalId: '6408248', formId: 'a7de26ea-8d70-4f2c-93cf-f768ecd66d4d', target: '#hs-kit-form-container' });
+      }
+    }
   }
 
   /* ─────────────────────────────────────────────────────
